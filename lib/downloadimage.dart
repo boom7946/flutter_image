@@ -13,7 +13,9 @@ class DownloadImage extends StatefulWidget {
 }
 
 class _DownloadImageState extends State<DownloadImage> {
-  Future<String> downloadAndSaveImage(String imageUrl) async {
+    String? _imagePath;
+
+  Future<void> downloadAndSaveImage(String imageUrl) async {
     // Get the application's documents directory
     final directory = await getApplicationDocumentsDirectory();
     final filePath =
@@ -32,7 +34,9 @@ class _DownloadImageState extends State<DownloadImage> {
       final file = File(filePath);
       await file.writeAsBytes(response.bodyBytes);
       print('Image saved to $filePath');
-      return filePath;
+      setState(() {
+        _imagePath = filePath;
+      });
     } else {
       throw Exception('Failed to download image');
     }
@@ -40,7 +44,6 @@ class _DownloadImageState extends State<DownloadImage> {
 
   @override
   Widget build(BuildContext context) {
-    String? _imagePath;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -48,10 +51,7 @@ class _DownloadImageState extends State<DownloadImage> {
           onPressed: () async {
             const imageUrl =
                 'https://img.freepik.com/free-vector/guitar-realistic-isolated_1284-4825.jpg?t=st=1719906599~exp=1719910199~hmac=820366021b8f5c2d4fdeff44cd63ff7bd753af5fc6b04670e1aae3d8ad48d5be&w=740';
-            final imagePath = await downloadAndSaveImage(imageUrl);
-            setState(() {
-              _imagePath = imagePath;
-            });
+            await downloadAndSaveImage(imageUrl);
           },
           child:const Text('Download Image'),
         ),
@@ -61,7 +61,9 @@ class _DownloadImageState extends State<DownloadImage> {
             width: 200,
             height: 200,
           ),
-        }
+
+          Text("image",style: TextStyle(color: Colors.white),)
+        },
       ],
     );
   }
