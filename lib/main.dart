@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_image/base64.dart';
 import 'package:flutter_image/downloadimage.dart';
+import 'package:flutter_image/loadfromdirectory.dart';
 
 void main() {
   runApp(RunMyApp());
@@ -49,6 +50,9 @@ class HomePage extends StatelessWidget {
                 },
                 child: Text("Base 64"),
               ),
+              SizedBox(
+                height: 10,
+              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -59,6 +63,9 @@ class HomePage extends StatelessWidget {
                 },
                 child: Text("Assets"),
               ),
+              SizedBox(
+                height: 10,
+              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -68,6 +75,19 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text("DownloadImage"),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoadImageFromDirectory()),
+                  );
+                },
+                child: Text("Load image from Directory"),
               ),
             ],
           ),

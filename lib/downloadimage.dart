@@ -14,28 +14,25 @@ class DownloadImage extends StatefulWidget {
 
 class _DownloadImageState extends State<DownloadImage> {
     String? _imagePath;
-
+    int _imageCount = 0;
   Future<void> downloadAndSaveImage(String imageUrl) async {
-    // Get the application's documents directory
-    final directory = await getApplicationDocumentsDirectory();
-    final filePath =
-        path.join(directory.path, 'images', 'downloaded_image.jpg');
+      final directory = await getApplicationDocumentsDirectory();
+      final fileName = 'downloaded_image_${_imageCount ++}.jpg';
+      final filePath = path.join(directory.path, 'images', fileName);
 
-    // Create the directory if it doesn't exist
     final imageDir = Directory(path.join(directory.path, 'images'));
     if (!await imageDir.exists()) {
       await imageDir.create(recursive: true);
     }
 
-    // Download the image
     final response = await http.get(Uri.parse(imageUrl));
     if (response.statusCode == 200) {
-      // Save the image to the file
       final file = File(filePath);
       await file.writeAsBytes(response.bodyBytes);
       print('Image saved to $filePath');
       setState(() {
         _imagePath = filePath;
+        print(_imagePath);
       });
     } else {
       throw Exception('Failed to download image');
@@ -44,27 +41,34 @@ class _DownloadImageState extends State<DownloadImage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () async {
-            const imageUrl =
-                'https://img.freepik.com/free-vector/guitar-realistic-isolated_1284-4825.jpg?t=st=1719906599~exp=1719910199~hmac=820366021b8f5c2d4fdeff44cd63ff7bd753af5fc6b04670e1aae3d8ad48d5be&w=740';
-            await downloadAndSaveImage(imageUrl);
-          },
-          child:const Text('Download Image'),
+    return Scaffold(
+      appBar: AppBar(title: Text("Download Image & get Image from Directory")),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                const imageUrl =
+                    'https://cdn-imgix.headout.com/tour/12449/TOUR-IMAGE/d40f6e72-a95b-4043-b85d-e065093828d8-6871-dubai-img-worlds-of-adventure-vip-experience-03.jpg?auto=format&w=713.0666666666667&h=458.4&q=90&ar=14%3A9&crop=faces';
+                await downloadAndSaveImage(imageUrl);
+              },
+              child:const Text('Download Image'),
+            ),
+            SizedBox(height: 20,),
+            if (_imagePath != null) ...{
+              Image.file(
+                File(_imagePath!),
+                width: 200,
+                height: 200,
+              ),
+        
+              Text("image",style: TextStyle(color: Colors.white),)
+            },
+          ],
         ),
-        if (_imagePath != null) ...{
-          Image.file(
-            File(_imagePath!),
-            width: 200,
-            height: 200,
-          ),
-
-          Text("image",style: TextStyle(color: Colors.white),)
-        },
-      ],
+      ),
     );
   }
 }
