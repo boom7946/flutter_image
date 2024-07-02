@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
@@ -13,12 +14,12 @@ class DownloadImage extends StatefulWidget {
 }
 
 class _DownloadImageState extends State<DownloadImage> {
-    String? _imagePath;
-    int _imageCount = 0;
+  String? _imagePath;
+  int _imageCount = 0;
   Future<void> downloadAndSaveImage(String imageUrl) async {
-      final directory = await getApplicationDocumentsDirectory();
-      final fileName = 'downloaded_image_${_imageCount ++}.jpg';
-      final filePath = path.join(directory.path, 'images', fileName);
+    final directory = await getApplicationDocumentsDirectory();
+    final fileName = 'downloaded_image_${_imageCount++}.jpg';
+    final filePath = path.join(directory.path, 'images', fileName);
 
     final imageDir = Directory(path.join(directory.path, 'images'));
     if (!await imageDir.exists()) {
@@ -41,33 +42,47 @@ class _DownloadImageState extends State<DownloadImage> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController imageURL = TextEditingController();
     return Scaffold(
       appBar: AppBar(title: Text("Download Image & get Image from Directory")),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                const imageUrl =
-                    'https://cdn-imgix.headout.com/tour/12449/TOUR-IMAGE/d40f6e72-a95b-4043-b85d-e065093828d8-6871-dubai-img-worlds-of-adventure-vip-experience-03.jpg?auto=format&w=713.0666666666667&h=458.4&q=90&ar=14%3A9&crop=faces';
-                await downloadAndSaveImage(imageUrl);
-              },
-              child:const Text('Download Image'),
-            ),
-            SizedBox(height: 20,),
-            if (_imagePath != null) ...{
-              Image.file(
-                File(_imagePath!),
-                width: 200,
-                height: 200,
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: TextField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)))),
+                controller: imageURL,
               ),
-        
-              Text("image",style: TextStyle(color: Colors.white),)
+            ),
+          ),
+          SizedBox( height: 10,),
+          ElevatedButton(
+            onPressed: () async {
+              String imageUrl =imageURL.text;
+              await downloadAndSaveImage(imageUrl);
             },
-          ],
-        ),
+            child: const Text('Download Image'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          if (_imagePath != null) ...{
+            Image.file(
+              File(_imagePath!),
+              width: 200,
+              height: 200,
+            ),
+            const Text(
+              "image",
+              style: TextStyle(color: Colors.white),
+            )
+          },
+        ],
       ),
     );
   }

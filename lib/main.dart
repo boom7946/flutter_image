@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_image/assetsimage.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -40,6 +41,13 @@ class HomePage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(
+                child: Image.asset(
+                  'assets/images/login-logo-banner.png',
+                  width: 300,
+                  height: 100,
+                ),
+              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(

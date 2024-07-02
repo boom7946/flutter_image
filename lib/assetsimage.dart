@@ -29,10 +29,16 @@ class _AssetsImageState extends State<AssetsImage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            TextField(
-              controller: imagename,
-              decoration: InputDecoration(
-                labelText: 'Enter image name',
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: TextField(
+                  controller: imagename,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8)))),
+                ),
               ),
             ),
             ElevatedButton(

@@ -54,9 +54,6 @@ class _Base64ImageState extends State<Base64Image> {
                 ElevatedButton(onPressed: () {
                   clear();
                 }, child: Text("clear")),
-                Container(
-                  child: Image.asset('assets/images/login-logo-banner.png',width: 100,height: 100,),
-                ),
                 ElevatedButton(
                   onPressed: () {
                     ImagetoBase64();

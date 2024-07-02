@@ -16,7 +16,7 @@ class LoadImageFromDirectory extends StatefulWidget {
 class _LoadImageFromDirectoryState extends State<LoadImageFromDirectory> {
   TextEditingController filename = TextEditingController();
   String? imagePath;
-  bool type = false;
+  bool type = true;
   List<File> _images = [];
   Future<void> loadImgefromDoc() async {
     final directory = await getApplicationDocumentsDirectory();
